@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.5.0/schema.json",
+  "name": "ce84b69d657ce07da44c",
+  "position": {
+    "x": 130.61577086089139,
+    "y": 60.954026401749317,
+    "z": 1,
+    "height": 615.76006262991655,
+    "width": 105.73657641119779,
+    "tabOrder": 1
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Estoque"
+                    }
+                  },
+                  "Property": "Codigo"
+                }
+              },
+              "queryRef": "Estoque.Codigo",
+              "nativeQueryRef": "Codigo"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

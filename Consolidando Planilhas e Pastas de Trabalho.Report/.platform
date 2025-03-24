@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Consolidando Planilhas e Pastas de Trabalho"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "32256817-c99a-43b1-97d8-8b80d30cd9d9"
+  }
+}

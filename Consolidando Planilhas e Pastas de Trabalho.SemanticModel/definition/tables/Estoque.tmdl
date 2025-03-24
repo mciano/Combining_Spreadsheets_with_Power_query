@@ -1,0 +1,71 @@
+table Estoque
+	lineageTag: a7a700df-1fc6-4d79-9345-a82a6dd5b711
+
+	column Codigo
+		dataType: string
+		lineageTag: 811df580-c7a9-4d2c-9ed8-f98b8be5928f
+		summarizeBy: none
+		sourceColumn: Codigo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Data
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6ff9d4e2-8361-48c3-8b5f-79930de985e9
+		summarizeBy: none
+		sourceColumn: Data
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Qtd
+		dataType: int64
+		formatString: 0
+		lineageTag: 47d1e9d6-783b-4b38-a81b-4924ac95a8c9
+		summarizeBy: sum
+		sourceColumn: Qtd
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Estoque = m
+		mode: import
+		source = ```
+				let
+				    Source = Folder.Contents ( "C:\Git\consolidando_estoque" ),
+				    ApenasXlsx = Table.SelectRows(Source, each [Extension] = ".xlsx"),
+				    
+				    // Definição da função para consolidar as pastas de trabalho
+				    fx_Consolida_Planilhas = ( Arquivo as binary ) as table =>
+				    let
+				        PastaTrabalho = Excel.Workbook(Arquivo),
+				        
+				        // Definição da função para tratar uma planilha
+				        fxTrataPlanilha = (Sheet as table ) as table =>
+				        let
+				            PromotedHeaders = Table.PromoteHeaders(Sheet, [PromoteAllScalars=true]),
+				            UnpivotedOtherColumns = Table.UnpivotOtherColumns(PromotedHeaders, {"Codigo"}, "Data", "Qtd"),
+				            ChangedType = Table.TransformColumnTypes(UnpivotedOtherColumns,{{"Codigo", type text}, {"Data", type date}, {"Qtd", Int64.Type}})
+				        in
+				            ChangedType,
+				        
+				        // Invoca a função tratando cada planilha
+				        fxTrataPlanilhaInvocada = Table.TransformColumns ( PastaTrabalho, {{"Data", fxTrataPlanilha, type table }} ),  
+				        
+				        PlanilhasTratadasEmLista = fxTrataPlanilhaInvocada[Data],
+				        PlanilhasCombinadas = Table.Combine ( PlanilhasTratadasEmLista )
+				    in
+				        PlanilhasCombinadas,
+				
+				    PlanilhasConsolidadas = Table.TransformColumns ( ApenasXlsx, {{"Content", fx_Consolida_Planilhas, type table}} ),
+				    ListaPastasTrabalho = PlanilhasConsolidadas[Content],
+				    PastasTrabalhoConsolidadas = Table.Combine (  ListaPastasTrabalho )
+				in
+				    PastasTrabalhoConsolidadas
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
