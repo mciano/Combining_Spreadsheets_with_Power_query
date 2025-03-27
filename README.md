@@ -1,6 +1,3 @@
-Vamos melhorar a organização e a apresentação dos códigos no README, destacando as principais partes e explicando o propósito de cada trecho. Além disso, podemos deixar o código mais legível e bem formatado.
-
----
 
 # Combine Sheets and Files
 
@@ -111,6 +108,3 @@ in
 ## 📝 Visuals
 In the next section, we will include screenshots and visuals of the query setup, Power Query Editor, and resulting combined table for better understanding.
 
----
-
-Se quiser adicionar as imagens ou melhorar mais algum trecho, é só mandar!
